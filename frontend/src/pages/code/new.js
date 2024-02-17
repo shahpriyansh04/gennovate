@@ -119,6 +119,7 @@ function Code() {
         text = text.replace(/```/g, "");
 
         text = text.replace(`javascript\n`, "").slice(0, -1);
+
         setChatMessages(text);
       })
       .catch((error) => {

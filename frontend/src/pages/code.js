@@ -9,6 +9,7 @@ import { CodeBlock, CopyBlock } from "react-code-blocks";
 import { JsonInput } from "@mantine/core";
 import JSONInput from "react-json-editor-ajrm";
 import locale from "react-json-editor-ajrm/locale/en";
+import Link from "next/link";
 
 const navItems = [
   {
@@ -37,6 +38,9 @@ function Code() {
   return (
     <div className="h-screen flex-col flex items-center">
       <Navbar navItems={navItems} />
+      <Link href="/code/new">
+        <Button>New</Button>
+      </Link>
     </div>
   );
 }
