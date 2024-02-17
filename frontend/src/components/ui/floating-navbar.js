@@ -8,25 +8,12 @@ import {
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { Home } from "lucide-react";
-export const FloatingNav = ({ className }) => {
-  const navItems = [
-    {
-      name: "Home",
-      link: "/",
-      icon: <Home className="h-4 w-4 text-neutral-500 dark:text-white" />,
-    },
-    {
-      name: "Features",
-      link: "#features",
-      icon: <Home className="h-4 w-4 text-neutral-500 dark:text-white" />,
-    },
-    {
-      name: "Contact",
-      link: "#contact",
-      icon: <Home className="h-4 w-4 text-neutral-500 dark:text-white" />,
-    },
-  ];
-
+import { useRouter } from "next/navigation";
+import { UserButton, useUser } from "@clerk/nextjs";
+export const FloatingNav = ({ navItems, className }) => {
+  const router = useRouter();
+  const { user } = useUser();
+  // console.log(navItems);
   const [visible, setVisible] = useState(true);
 
   return (
@@ -61,9 +48,18 @@ export const FloatingNav = ({ className }) => {
             <span className="hidden sm:block  text-xl">{navItem.name}</span>
           </Link>
         ))}
-        <button className="border text-xl font-medium relative border-neutral-200 dark:border-white/[0.2] text-black dark:text-white px-4 py-2 rounded-full">
-          <span>Login</span>
-          <span className="absolute inset-x-0 w-1/2 mx-auto -bottom-px bg-gradient-to-r from-transparent via-blue-500 to-transparent  h-px" />
+        <button
+          onClick={() => router.push("/login")}
+          className="border text-xl font-medium relative border-neutral-200 dark:border-white/[0.2] text-black dark:text-white px-4 py-2 rounded-full"
+        >
+          {user ? (
+            <UserButton />
+          ) : (
+            <>
+              <span>Login</span>
+              <span className="absolute inset-x-0 w-1/2 mx-auto -bottom-px bg-gradient-to-r from-transparent via-blue-500 to-transparent  h-px" />
+            </>
+          )}
         </button>
       </motion.div>
     </AnimatePresence>
