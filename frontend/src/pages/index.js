@@ -7,56 +7,19 @@ import { ModeToggle } from "@/components/ui/mode-toggle";
 import { ContainerScroll } from "@/components/ui/container-scroll-animation";
 import { BentoGrid, BentoGridItem } from "@/components/ui/bento-grid";
 import { HeroParallax } from "@/components/ui/hero-parallax";
-
-const inter = Inter({ subsets: ["latin"] });
+import { HoverEffect } from "@/components/ui/card-hover-effect";
+import Navbar from "@/components/ui/navbar";
 
 export default function Home() {
   const [active, setActive] = useState(true);
   return (
     <div
-      className="flex flex-col items-center justify-center"
+      className="flex flex-col items-center justify-center overflow-x-hidden"
       onClick={() => setActive(!active)}
     >
-      <div className="flex py-6 px-40 justify-between items-center bg-bl ack w-full">
-        <p className="text-2xl font-bold">Logo</p>
-        <FloatingNav />
-
-        <ModeToggle />
-      </div>
-      <div className="h-[50rem] w-full dark:bg-black bg-white  dark:bg-dot-white/[0.2] bg-dot-black/[0.2] relative flex items-center justify-center">
-        {/* Radial gradient for the container to give a faded look */}
-        <div className="absolute pointer-events-none inset-0 flex items-center justify-center dark:bg-black bg-white [mask-image:radial-gradient(ellipse_at_center,transparent_20%,black)]"></div>
-        <p className="text-4xl sm:text-7xl font-bold relative z-20 bg-clip-text text-transparent bg-gradient-to-b from-neutral-200 to-neutral-500 py-8">
-          Backgrounds
-        </p>
-      </div>
-      {/* <div className="mt-20 text-7xl text-center font-bold grid gap-5 justify-center">
-        <p>Empower your creative</p>
-        <p>Craft with AI Support</p>
-        <p className="text-2xl mt-6 font-medium">
-          Generate countless ideas quickly and elevate your creative process
-          effortlessly.
-        </p>
-        <div className=" flex justify-center mt-12">
-          <Button size="lg" className="text-xl">
-            Start Building Now
-            <ArrowRight className="ml-3" />
-          </Button>
-        </div>
-      </div> */}
+      <Navbar />
       <HeroParallax />
-      <BentoGrid className="max-w-4xl mx-auto" id="features">
-        {items.map((item, i) => (
-          <BentoGridItem
-            key={i}
-            title={item.title}
-            description={item.description}
-            header={item.header}
-            icon={<Sun />}
-            className={i === 3 || i === 6 ? "md:col-span-2" : ""}
-          />
-        ))}
-      </BentoGrid>
+      <HoverEffect />
       <footer
         className="bg-primary-foreground w-full text-muted-foreground p-6 mt-12"
         id="contact"
