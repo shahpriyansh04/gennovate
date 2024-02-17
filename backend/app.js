@@ -1,35 +1,29 @@
 const path = require('path');
+const bodyParser = require('body-parser');
 const express = require('express');
 const morgan = require('morgan');
-const rateLimit = require('express-rate-limit');
 const mongoSanitize = require('express-mongo-sanitize');
 const xss = require('xss-clean');
-const hpp = require('hpp');
 const cookieParser = require('cookie-parser');
-
+const apiRoute = require(`./route/apiRoute`);
 const AppError = require('./util/appError');
-const globalErrorHandler = require(`./connection/errorController`);
-
+const globalErrorHandler = require(`./controller/errorController`);
+const chatRoute = require(`./route/chatsRoute`);
+const userRoute = require(`./route/userRoute`);
+const messageRoute = require(`./route/messageRoute`);
+const schemaRoute = require(`./route/schemaRoute`);
 const app = express();
 
 // 1) GLOBAL MIDDLEWARES
 // Serving static files
-app.use(express.static(path.join(__dirname, 'public')));
 
 // Set security HTTP headers
 
 // Development logging
-if (process.env.NODE_ENV === 'development') {
-  app.use(morgan('dev'));
-}
+app.use(morgan('dev'));
 
 // Limit requests from same API
-const limiter = rateLimit({
-  max: 100,
-  windowMs: 60 * 60 * 1000,
-  message: 'Too many requests from this IP, please try again in an hour!'
-});
-app.use('/api', limiter);
+app.use(bodyParser.json());
 
 // Body parser, reading data from body into req.body
 app.use(cookieParser());
@@ -40,29 +34,16 @@ app.use(mongoSanitize());
 // Data sanitization against XSS
 app.use(xss());
 
-// Prevent parameter pollution
-// app.use(
-//   hpp({
-//     whitelist: [
-//       'duration',
-//       'ratingsQuantity',
-//       'ratingsAverage',
-//       'maxGroupSize',
-//       'difficulty',
-//       'price'
-//     ]
-//   })
-// );
-
 // Test middleware
-app.use((req, res, next) => {
-  req.requestTime = new Date().toISOString();
-  console.log(req.cookies);
-  next();
-});
-
 // 3) ROUTES
-
+app.get('/', (req, res) => {
+  res.send("Hello World, I'm here!");
+});
+app.use('/message', messageRoute);
+app.use('/user', userRoute);
+app.use('/chat', chatRoute);
+app.use('/schema', schemaRoute);
+app.use('/api', apiRoute);
 app.all('*', (req, res, next) => {
   next(new AppError(`Can't find ${req.originalUrl} on this server!`, 404));
 });
