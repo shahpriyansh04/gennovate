@@ -49,7 +49,7 @@ export const FloatingNav = ({ navItems, className }) => {
           </Link>
         ))}
         <button
-          onClick={() => router.push("/login")}
+          onClick={() => !user && router.push("/login")}
           className="border text-xl font-medium relative border-neutral-200 dark:border-white/[0.2] text-black dark:text-white px-4 py-2 rounded-full"
         >
           {user ? (
