@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import AceEditor from "react-ace";
 import { MagnifyingGlass } from "react-loader-spinner";
 import {
@@ -15,6 +15,8 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { useRouter } from "next/router";
 import Dashboard from ".";
 import { cn } from "@/lib/utils";
+import { Speaker } from "lucide-react";
+
 export default function CodeAnalyzer() {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
@@ -26,6 +28,17 @@ export default function CodeAnalyzer() {
   const genAI = new GoogleGenerativeAI(API_KEY);
   const model = genAI.getGenerativeModel({ model: MODEL_NAME });
   const [code, setCode] = useState(decodeURIComponent(router.query.code || ""));
+
+  useEffect(() => {
+    const script = document.createElement("script");
+    script.src = "https://code.responsivevoice.org/responsivevoice.js";
+    script.async = true;
+    document.body.appendChild(script);
+    return () => {
+      document.body.removeChild(script);
+    };
+  }, []);
+
   function onChange(newValue) {
     setCode(newValue);
   }
@@ -76,6 +89,29 @@ export default function CodeAnalyzer() {
     setMessage(result.response.text());
   };
 
+  const generateSummary = async () => {
+    const parts = [
+      {
+        text: "I am providing you with a code report. I want you to summarise it as short as possible while leaving the code out. Make it as concise as possible. Make it so that it can be read out by a narrator",
+      },
+      {
+        text: message,
+      },
+    ];
+    const result = await model.generateContent({
+      contents: [{ role: "user", parts }],
+      generationConfig,
+      safetySettings,
+    });
+    console.log(result.response.text());
+    const input = result.response.text();
+
+    // Speak the text using ResponsiveVoice
+    if (window.responsiveVoice) {
+      window.responsiveVoice.speak(input);
+    }
+  };
+
   return (
     <Dashboard>
       <p className="text-7xl text-white font-bold text-center mt-12">
@@ -96,14 +132,17 @@ export default function CodeAnalyzer() {
           />
         </div>
         <Button
-          onClick={analyzeCode}
+          onClick={() => {
+            console.log("gl");
+            window.responsiveVoice.speak("Hello");
+          }}
           className="text-xl rounded-md  py-5 flex -1 "
           size="lg"
         >
           Analyse
         </Button>
         <Card className="h-full p-5 text-xl">
-          <ScrollArea className={cn("h-[500px] w-[500px]  text-wrap")}>
+          <ScrollArea className={cn("h-[500px] w-[500px]  text-wrap relative")}>
             <div className=" h-full w-full items-center justify-center">
               {loading ? (
                 <MagnifyingGlass
@@ -117,7 +156,13 @@ export default function CodeAnalyzer() {
                   color="#e15b64"
                 />
               ) : (
-                <Markdown children={message} />
+                <div className="">
+                  <Speaker
+                    className="absolute top-0 right-4 cursor-pointer"
+                    onClick={generateSummary}
+                  />
+                  <Markdown children={message} />
+                </div>
               )}
             </div>
           </ScrollArea>

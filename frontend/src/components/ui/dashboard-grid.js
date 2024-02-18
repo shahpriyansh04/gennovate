@@ -1,6 +1,6 @@
 import React from "react";
 import { BentoGrid, BentoGridItem } from "./bento-grid";
-import { HomeIcon } from "lucide-react";
+import { Code, HomeIcon } from "lucide-react";
 
 export default function DashboardGrid() {
   return (
@@ -31,7 +31,11 @@ const items = [
   {
     title: "Prompt2Code",
     description: "Unlock the power of multiple languages",
-    header: <Skeleton />,
+    header: (
+      <div className="w-full h-[9rem] ">
+        <img src="1.png" alt="" className="object-contain w-full h-full" />
+      </div>
+    ),
     link: "/dashboard/chats",
     icon: <HomeIcon className="h-4 w-4 text-neutral-500" />,
   },
@@ -39,7 +43,11 @@ const items = [
     title: "Sketch The Site",
     description:
       "Effortlessly translate images or sketches into HTML code with CSS.",
-    header: <Skeleton />,
+    header: (
+      <div className="w-full h-[9rem] ">
+        <img src="2.png" alt="" className="object-contain w-full h-full" />
+      </div>
+    ),
     link: "/dashboard/image-to-code",
 
     icon: <HomeIcon className="h-4 w-4 text-neutral-500" />,
@@ -48,7 +56,11 @@ const items = [
   {
     title: "CodeSense",
     description: "Utilize cutting-edge technology to provide detailed code",
-    header: <Skeleton />,
+    header: (
+      <div className="w-full h-[9rem] ">
+        <img src="3.png" alt="" className="object-contain w-full h-full" />
+      </div>
+    ),
     link: "/dashboard/code",
 
     icon: <HomeIcon className="h-4 w-4 text-neutral-500" />,
@@ -56,7 +68,13 @@ const items = [
   {
     title: "JsonMapper",
     description: "Convert structured JSON input to desired output",
-    header: <Skeleton />,
+    header: (
+      <div className="w-full h-[9rem] flex gap-5">
+        <img src="5.png" alt="" className="object-contain w-full h-full" />
+
+        <img src="4.png" alt="" className="object-contain w-full h-full" />
+      </div>
+    ),
     link: "/dashboard/data",
 
     icon: <HomeIcon className="h-4 w-4 text-neutral-500" />,
@@ -64,7 +82,11 @@ const items = [
   {
     title: "Error handling",
     description: "Instanly analyse codes, detect errors",
-    header: <Skeleton />,
+    header: (
+      <div className="w-full h-[9rem] ">
+        <img src="3.png" alt="" className="object-contain w-full h-full" />
+      </div>
+    ),
     link: "/dashboard",
 
     icon: <HomeIcon className="h-4 w-4 text-neutral-500" />,
