@@ -85,7 +85,7 @@ export default function CodeAnalyzer() {
       </Button>
       <Card className="flex-1 ">
         <CardHeader>
-          <ScrollArea className="h-[500px] text-wrap">
+          <ScrollArea className="h-[500px] w-[500px] text-wrap">
             <Markdown children={message} />
           </ScrollArea>
         </CardHeader>

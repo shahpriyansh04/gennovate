@@ -133,7 +133,6 @@ function Code() {
     HelloWorld();`;
   return (
     <div className="h-screen flex-col flex items-center">
-      <Navbar navItems={navItems} />
       <div className="w-3/5 flex flex-col justify-center gap-12">
         <div className="flex space-x-12 mt-12 justify-between ">
           <Card>

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import Markdown from "react-markdown";
 import gfm from "remark-gfm";
 import { MDXProvider } from "@mdx-js/react";
+import { CopyToClipboard } from "react-copy-to-clipboard";
 
 import remarkGfm from "remark-gfm";
 import {
@@ -13,6 +14,12 @@ import { CodeBlock } from "react-code-blocks";
 import Navbar from "@/components/ui/navbar";
 import Home from "..";
 import { Button } from "@/components/ui/button";
+import Dashboard from ".";
+import { Input } from "@/components/ui/input";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Card, CardHeader } from "@/components/ui/card";
+import { Image } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 const MODEL_NAME = "gemini-1.0-pro-vision-latest";
 const API_KEY = "AIzaSyA_KMefibpuuM56ibhTArtxYk-zMJWF2N4";
@@ -47,6 +54,13 @@ const MyComponent = () => {
   const [code, setCode] = useState();
   const [text, setText] = useState();
   const [filePath, setFilePath] = useState();
+  const [loading, setLoading] = useState(false);
+  const [isCopied, setIsCopied] = useState(false);
+
+  const handleCopy = () => {
+    setIsCopied(true);
+    setTimeout(() => setIsCopied(false), 2000); // Reset after 2 seconds
+  };
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
@@ -59,40 +73,42 @@ const MyComponent = () => {
     setFilePath(url);
     reader.readAsDataURL(file);
   };
+  const genAI = new GoogleGenerativeAI(API_KEY);
+
+  const model = genAI.getGenerativeModel({ model: MODEL_NAME });
+
+  const generationConfig = {
+    temperature: 0.4,
+    topK: 32,
+    topP: 1,
+    maxOutputTokens: 4096,
+  };
+
+  const safetySettings = [
+    {
+      category: HarmCategory.HARM_CATEGORY_HARASSMENT,
+      threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
+    },
+    {
+      category: HarmCategory.HARM_CATEGORY_HATE_SPEECH,
+      threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
+    },
+    {
+      category: HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT,
+      threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
+    },
+    {
+      category: HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT,
+      threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
+    },
+  ];
 
   const generateContent = async () => {
-    const genAI = new GoogleGenerativeAI(API_KEY);
-    const model = genAI.getGenerativeModel({ model: MODEL_NAME });
-
-    const generationConfig = {
-      temperature: 0.4,
-      topK: 32,
-      topP: 1,
-      maxOutputTokens: 4096,
-    };
-
-    const safetySettings = [
-      {
-        category: HarmCategory.HARM_CATEGORY_HARASSMENT,
-        threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
-      },
-      {
-        category: HarmCategory.HARM_CATEGORY_HATE_SPEECH,
-        threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
-      },
-      {
-        category: HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT,
-        threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
-      },
-      {
-        category: HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT,
-        threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
-      },
-    ];
-
+    setText(null);
+    setLoading(true);
     const parts = [
       {
-        text: "Provide a html and a css for the given image\n\nCSS should be inline CSS and not outside the HTML",
+        text: "You are extremely efficient bot to produce html code with appropriate styling. Provide me the html and the css of the given image and most importantly, make sure that you do not provide two separate codes for html and css.You have to incorporate the css styling inline and return only one code of html with appropriate styling applied in it",
       },
       {
         inlineData: {
@@ -114,24 +130,85 @@ const MyComponent = () => {
 
     text = text.replace(`html\n`, "").slice(0, -1);
     setCode(text);
+    setLoading(false);
     setText(result.response.text());
     console.log(text);
   };
 
   return (
-    <div className="h-screen flex-col flex items-center">
-      <Navbar navItems={navItems} />
-      {filePath && <img src={filePath} alt="Selected" />}
-      {!text && !file && <input type="file" onChange={handleFileChange} />}
-      {!text && file && (
-        <Button onClick={generateContent} className="mt-6" size="xl">
-          Generate Content
-        </Button>
-      )}
-      <div className="py-12">
-        <Markdown children={text} />
+    <Dashboard>
+      <div
+        key="1"
+        className="w-full grid items-center  gap-4 p-4 text-center md:px-6 lg:gap-10  dark:text-gray-50"
+      >
+        <div className="space-y-3 text-center w-full">
+          <h1 className="text-3xl text-white font-bold tracking-tighter sm:text-4xl md:text-5xl">
+            Image to Code
+          </h1>
+          <p className="mx-auto text-muted-foreground max-w-[700px]  md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed dark:text-gray-400">
+            Upload an image and convert it to code.
+          </p>
+        </div>
+        <div className="w-full mt-12 gap-20 justify-center  flex mx-auto">
+          <div>
+            {!file && (
+              <div className="flex items-center justify-center w-[30rem] h-96 border-2 border-dashed border-gray-400 rounded-lg">
+                <label
+                  htmlFor="file-upload"
+                  className="flex flex-col  items-center px-4 py-6 text-white/50 rounded-lg tracking-wide uppercase cursor-pointer "
+                >
+                  <Image className="w-20 h-20" />
+                  <span className="mt-2 text-base leading-normal">
+                    Select a file
+                  </span>
+                  <input
+                    type="file"
+                    className="hidden"
+                    id="file-upload"
+                    onChange={handleFileChange}
+                  />
+                </label>
+              </div>
+            )}
+            {file && (
+              <img src={filePath} className="w-[30rem] h-96 rounded-lg" />
+            )}
+            <Button
+              onClick={generateContent}
+              className="mt-6 w-full bg-white rounded-md text-[#1a202c] hover:text-white"
+            >
+              Generate
+            </Button>
+          </div>
+          <div className="flex items-start text-white">
+            <Card className={cn("dark:bg-[#1b1b1b]")}>
+              {text ? (
+                <CardHeader>
+                  <ScrollArea className="h-[500px] text-start relative">
+                    <Markdown children={text} />
+                    <CopyToClipboard
+                      text={text}
+                      onCopy={handleCopy}
+                      className="absolute top-0 right-3"
+                    >
+                      <button>{isCopied ? "Copied!" : "Copy"}</button>
+                    </CopyToClipboard>
+                  </ScrollArea>
+                </CardHeader>
+              ) : (
+                <CardHeader className="flex h-96 w-[30rem] items-center justify-center">
+                  {loading ? (
+                    <p>Loading</p>
+                  ) : (
+                    <p>Please select an image to view the code</p>
+                  )}
+                </CardHeader>
+              )}
+            </Card>
+          </div>
+        </div>
       </div>
-    </div>
+    </Dashboard>
   );
 };
 

@@ -13,6 +13,7 @@ import {
 } from "@google/generative-ai";
 import { useUser } from "@clerk/nextjs";
 import Link from "next/link";
+import Dashboard from ".";
 const navItems = [
   {
     name: "Home",
@@ -182,28 +183,13 @@ function Chats() {
     setUserPrompt("");
   };
 
-  const handleGenerate = () => {
-    setChatMessages([
-      ...chatMessages,
-      {
-        id: Math.random(),
-        sender: "User1",
-        message: userPrompt,
-        timestamp: new Date().getTime() - 1000000,
-      },
-    ]);
-
-    getAnswer(userPrompt);
-  };
-
   return (
-    <div className="h-screen flex-col flex items-start">
-      <Navbar navItems={navItems} />
-      <div className="w-3/5 mx-auto mt-20 flex h-full gap-12 py-12">
-        <Card className="min-h-auto  w-80 flex flex-col justify-between">
-          <div>
+    <Dashboard>
+      <div className="h-full mx-auto  flex py-10 px-5 gap-12 ">
+        <Card className="min-h-auto bg-transparent w-80 border-none text-white flex flex-col justify-between">
+          <div className="grid gap-4">
             {chatHistories.map((chat) => (
-              <div className="flex text-lg hover:cursor-pointer w-full items-center justify-between border-y-2 border-gray-200  p-4 ">
+              <div className="flex text-lg border rounded-md border-gray-100/50 hover:cursor-pointer w-full items-center justify-between  p-4 ">
                 {chat.title}
                 <div className="flex items-center gap-2 ">
                   <Edit />
@@ -212,14 +198,19 @@ function Chats() {
               </div>
             ))}
           </div>
-          <Button>New Chat</Button>
+          <Button
+            className="rounded-md text-[#1a202c] hover:text-white bg-white"
+            size="lg"
+          >
+            New Chat
+          </Button>
         </Card>
         <div className="flex-1 h-full flex flex-col gap-12">
-          <Card className="flex-1">
+          <Card className="flex-1 bg-transparent/25 dark:bg-[#18181B] text-white">
             <CardHeader>
               <CardTitle>Title</CardTitle>
             </CardHeader>
-            <ScrollArea className="h-[500px] ">
+            <ScrollArea className="h-[700px] ">
               <CardContent className="grid gap-10 text-lg">
                 {chatMessages.map((message) => {
                   const isCode = message.message.includes("```");
@@ -237,12 +228,19 @@ function Chats() {
                       key={message.id}
                       className="flex items-start justify-start gap-8"
                     >
-                      <img
-                        src="https://www.shutterstock.com/image-vector/young-smiling-man-avatar-brown-260nw-2261401207.jpg"
-                        alt="User Avatar"
-                        className="w-8 h-8"
-                      />
-
+                      {message.sender === "User1" ? (
+                        <img
+                          src={user.imageUrl}
+                          alt="User Avatar"
+                          className="w-8 h-8 rounded-full"
+                        />
+                      ) : (
+                        <img
+                          src="https://www.shutterstock.com/image-vector/young-smiling-man-avatar-brown-260nw-2261401207.jpg"
+                          alt="User Avatar"
+                          className="w-8 h-8 rounded-full"
+                        />
+                      )}
                       <div className="flex justify-between items-start flex-1">
                         <div className="flex flex-col gap-3">
                           <p>{text}</p>
@@ -259,7 +257,9 @@ function Chats() {
                                   code
                                 )}`}
                               >
-                                <Button>Check your code here</Button>
+                                <Button className="mt-4 ">
+                                  Check your code here
+                                </Button>
                               </Link>
                             </div>
                           )}
@@ -281,7 +281,7 @@ function Chats() {
           </Card>
           <div className="flex items-center gap-12">
             <Textarea
-              className="resize-none h-[60px] text-xl p-3 w-full"
+              className="resize-none h-[60px] text-xl p-3 w-full bg-transparent text-white"
               value={userPrompt}
               onChange={(e) => {
                 setUserPrompt(e.target.value);
@@ -289,7 +289,7 @@ function Chats() {
             />
             <Button
               size="lg"
-              className="h-full rounded-md"
+              className="h-full rounded-md bg-white text-[#1a202c] hover:text-white"
               onClick={() => getAnswer(userPrompt)}
             >
               Generate
@@ -297,7 +297,7 @@ function Chats() {
           </div>
         </div>
       </div>
-    </div>
+    </Dashboard>
   );
 }
 
