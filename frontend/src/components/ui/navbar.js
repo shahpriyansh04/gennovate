@@ -25,6 +25,7 @@ function Navbar({
   return (
     <div className="flex py-6 px-40 justify-between items-center bg-bl ack w-full">
       <p className="text-4xl font-bold">GenNovate</p>
+      <img src={"/logo.png"} className="w-20 h-20" />
       <FloatingNav navItems={navItems} />
 
       <ModeToggle />

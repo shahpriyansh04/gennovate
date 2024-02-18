@@ -53,66 +53,37 @@ const message1 = [
   {
     id: 3,
     sender: "User1",
-    message:
-      "Here's a code snippet: \n\n```javascript\nlet x = 10;\nconsole.log(x);\n```",
+    message: "I need a help with Tensorflow.",
     timestamp: new Date().getTime(),
     language: "javascript",
   },
   {
     id: 4,
-    sender: "User1",
-    message: "Hello, how are you?",
-    timestamp: new Date().getTime() - 1000000,
-  },
-  {
-    id: 5,
     sender: "User2",
-    message: "I'm good, thanks! How about you?",
-    timestamp: new Date().getTime() - 5000,
-  },
-  {
-    id: 6,
-    sender: "User1",
     message:
-      "Great! Here's some C# code: \n\n```csharp\nint x = 10;\nConsole.WriteLine(x);\n```",
-    timestamp: new Date().getTime(),
-    language: "csharp",
-  },
-  {
-    id: 7,
-    sender: "User1",
-    message: "Hello, how are you?",
+      "Of course! I'd be happy to help you with TensorFlow. What specific questions or issues do you have?",
     timestamp: new Date().getTime() - 1000000,
-  },
-  {
-    id: 8,
-    sender: "User2",
-    message: "I'm good, thanks! How about you?",
-    timestamp: new Date().getTime() - 5000,
-  },
-  {
-    id: 9,
-    sender: "User1",
-    message:
-      "Here's yet another code snippet: \n\n```javascript\nlet arr = [1, 2, 3, 4, 5];\nlet sum = arr.reduce((a, b) => a + b, 0);\nconsole.log(sum);\n```",
-    timestamp: new Date().getTime(),
-    language: "javascript",
-  },
-  {
-    id: 10,
-    sender: "User1",
-    message: "Hello, how are you?",
   },
 ];
 const chatHistories = [
   {
     chatId: 1,
-    title: "Chat with User2",
+    title: "chat 1 ",
     messages: message1,
   },
   {
     chatId: 2,
-    title: "Chat with User4",
+    title: "Untitled",
+    messages: message1,
+  },
+  {
+    chatId: 3,
+    title: "Untitled",
+    messages: message1,
+  },
+  {
+    chatId: 4,
+    title: "Untitled",
     messages: message1,
   },
   // more chat histories...
@@ -264,14 +235,6 @@ function Chats() {
                             </div>
                           )}
                         </div>
-
-                        <p>
-                          {`${new Date(
-                            message.timestamp
-                          ).getHours()}:${new Date(
-                            message.timestamp
-                          ).getMinutes()} `}
-                        </p>
                       </div>
                     </div>
                   );

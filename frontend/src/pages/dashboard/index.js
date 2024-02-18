@@ -32,7 +32,7 @@ export default function Dashboard({ children }) {
             href="/"
           >
             <p className="text-white font-bold">GenNovate</p>
-            <img src="/logo.jpeg" alt="" className="h-16 w-16" />
+            <img src="/logo.png" alt="" className="h-16 w-16" />
           </Link>
         </div>
         <div className="flex-1 overflow-y-auto ">
