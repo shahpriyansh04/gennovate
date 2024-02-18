@@ -29,40 +29,41 @@ const Skeleton = () => (
 );
 const items = [
   {
-    title: "Code Generator",
-    description: "Get the tech stack behind.",
+    title: "Prompt2Code",
+    description: "Unlock the power of multiple languages",
     header: <Skeleton />,
     link: "/dashboard/chats",
     icon: <HomeIcon className="h-4 w-4 text-neutral-500" />,
   },
   {
-    title: "Image to Code",
-    description: "Dive into the transformative power of technology.",
+    title: "Sketch The Site",
+    description:
+      "Effortlessly translate images or sketches into HTML code with CSS.",
     header: <Skeleton />,
-    link: "/image-to-code",
+    link: "/dashboard/image-to-code",
 
     icon: <HomeIcon className="h-4 w-4 text-neutral-500" />,
   },
 
   {
-    title: "Data Visualisation",
-    description: "Dive into the transformative power of technology.",
+    title: "CodeSense",
+    description: "Utilize cutting-edge technology to provide detailed code",
     header: <Skeleton />,
-    link: "/data",
+    link: "/dashboard/code",
 
     icon: <HomeIcon className="h-4 w-4 text-neutral-500" />,
   },
   {
-    title: "Function Code",
-    description: "Dive into the transformative power of technology.",
+    title: "JsonMapper",
+    description: "Convert structured JSON input to desired output",
     header: <Skeleton />,
-    link: "/code",
+    link: "/dashboard/data",
 
     icon: <HomeIcon className="h-4 w-4 text-neutral-500" />,
   },
   {
-    title: "Coming Soon...",
-    description: "Dive into the transformative power of technology.",
+    title: "Error handling",
+    description: "Instanly analyse codes, detect errors",
     header: <Skeleton />,
     link: "/dashboard",
 

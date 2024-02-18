@@ -33,10 +33,10 @@ export const BentoGridItem = ({
       <Link href={`/${link}`}>
         {header}
         <div className="flex flex-col h-full justify-center group-hover/bento:translate-x-2 transition duration-200">
-          <div className="font-sans font-bold text-white dark:text-neutral-200 mb-2 mt-2">
+          <div className="font-sans font-bold text-xl text-white dark:text-neutral-200 mb-2 mt-2">
             {title}
           </div>
-          <div className="font-sans font-normal text-gray-200 text-xs dark:text-neutral-300">
+          <div className="font-sans text-xs font-normal text-gray-200  dark:text-neutral-300">
             {description}
           </div>
         </div>

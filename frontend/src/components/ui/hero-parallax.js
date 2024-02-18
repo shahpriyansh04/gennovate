@@ -11,8 +11,10 @@ import Image from "next/image";
 import Link from "next/link";
 import { Button } from "./button";
 import { ArrowRight } from "lucide-react";
+import { useRouter } from "next/router";
 
 export const HeroParallax = () => {
+  const router = useRouter();
   const firstRow = products.slice(0, 5);
   const secondRow = products.slice(5, 10);
   const thirdRow = products.slice(10, 15);
@@ -51,7 +53,7 @@ export const HeroParallax = () => {
   return (
     <div
       ref={ref}
-      className="h-[300vh] py-40 overflow-hidden  antialiased relative flex flex-col self-auto [perspective:1000px] [transform-style:preserve-3d]"
+      className="h-[250vh] py-40 overflow-hidden  antialiased relative flex flex-col self-auto [perspective:1000px] [transform-style:preserve-3d]"
     >
       <Header />
       <motion.div
@@ -72,7 +74,7 @@ export const HeroParallax = () => {
             />
           ))}
         </motion.div>
-        <motion.div className="flex flex-row  mb-20 space-x-20 ">
+        <motion.div className="flex flex-row  mb-40 space-x-20 ">
           {secondRow.map((product) => (
             <ProductCard
               product={product}
@@ -81,17 +83,13 @@ export const HeroParallax = () => {
             />
           ))}
         </motion.div>
-        <motion.div className="flex flex-row-reverse space-x-reverse space-x-20">
-          {thirdRow.map((product) => (
-            <ProductCard
-              product={product}
-              translate={translateX}
-              key={product.title}
-            />
-          ))}
-        </motion.div>
-        <div className=" flex justify-center mt-12">
-          <Button size="lg" className="text-xl">
+
+        <div className=" flex justify-center">
+          <Button
+            size="lg"
+            className="text-xl"
+            onClick={() => router.push("/dashboard ")}
+          >
             Start Building Now
             <ArrowRight className="ml-3" />
           </Button>
@@ -102,6 +100,7 @@ export const HeroParallax = () => {
 };
 
 export const Header = () => {
+  const router = useRouter();
   return (
     <div className="max-w-7xl relative mx-auto py-20 md:py-40 px-4 w-full  left-0 top-0">
       <h1 className="text-2xl md:text-7xl font-bold dark:text-white">
@@ -113,7 +112,11 @@ export const Header = () => {
         amazing products.
       </p>
       <div className=" flex justify-start mt-12">
-        <Button size="lg" className="text-xl">
+        <Button
+          size="lg"
+          className="text-xl"
+          onClick={() => router.push("/dashboard ")}
+        >
           Start Building Now
           <ArrowRight className="ml-3" />
         </Button>

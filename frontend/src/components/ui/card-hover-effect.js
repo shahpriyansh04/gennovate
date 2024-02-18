@@ -9,9 +9,10 @@ export const HoverEffect = ({ className }) => {
   return (
     <div
       className={cn(
-        "grid grid-cols-1 md:grid-cols-2 w-3/5 lg:grid-cols-3  py-10",
+        "grid grid-cols-1 md:grid-cols-2 w-3/5 lg:grid-cols-3  pb-10",
         className
       )}
+      id="features"
     >
       {items.map((item, idx) => (
         <Link
@@ -24,7 +25,7 @@ export const HoverEffect = ({ className }) => {
           <AnimatePresence>
             {hoveredIndex === idx && (
               <motion.span
-                className="absolute inset-0 h-full w-full bg-neutral-200 dark:bg-slate-800/[0.8] block  rounded-3xl"
+                className="absolute inset-0 h-full w-full bg-neutral-200 dark:bg-slate-800/[0.3] block  rounded-3xl"
                 layoutId="hoverBackground"
                 initial={{ opacity: 0 }}
                 animate={{
@@ -38,7 +39,7 @@ export const HoverEffect = ({ className }) => {
               />
             )}
           </AnimatePresence>
-          <Card>
+          <Card className={"bg-transparent"}>
             <CardTitle>{item.title}</CardTitle>
             <CardDescription>{item.description}</CardDescription>
           </Card>
@@ -64,7 +65,12 @@ export const Card = ({ className, children }) => {
 };
 export const CardTitle = ({ className, children }) => {
   return (
-    <h4 className={cn("text-zinc-100 font-bold tracking-wide mt-4", className)}>
+    <h4
+      className={cn(
+        "text-zinc-100 text-xl font-bold tracking-wide mt-4",
+        className
+      )}
+    >
       {children}
     </h4>
   );
@@ -83,39 +89,29 @@ export const CardDescription = ({ className, children }) => {
 };
 export const items = [
   {
-    title: "Stripe",
-    description:
-      "A technology company that builds economic infrastructure for the internet.",
-    link: "https://stripe.com",
+    title: "Prompt2Code",
+    description: "Unlock the power of multiple languages",
+    link: "/dashboard/chats",
   },
   {
-    title: "Netflix",
+    title: "Sketch The Site",
     description:
-      "A streaming service that offers a wide variety of award-winning TV shows, movies, anime, documentaries, and more on thousands of internet-connected devices.",
-    link: "https://netflix.com",
+      "Effortlessly translate images or sketches into HTML code with CSS.",
+    link: "/dashboard/image-to-code",
   },
   {
-    title: "Google",
-    description:
-      "A multinational technology company that specializes in Internet-related services and products.",
-    link: "https://google.com",
+    title: "JsonMapper",
+    description: "Utilize cutting-edge technology to provide detailed code",
+    link: "/dashboard/code",
   },
   {
-    title: "Meta",
-    description:
-      "A technology company that focuses on building products that advance Facebook's mission of bringing the world closer together.",
-    link: "https://meta.com",
+    title: "CodeSense",
+    description: "Convert structured JSON input to desired output",
+    link: "/dashboard/code-analyzer",
   },
   {
-    title: "Amazon",
-    description:
-      "A multinational technology company focusing on e-commerce, cloud computing, digital streaming, and artificial intelligence.",
-    link: "https://amazon.com",
-  },
-  {
-    title: "Microsoft",
-    description:
-      "A multinational technology company that develops, manufactures, licenses, supports, and sells computer software, consumer electronics, personal computers, and related services.",
-    link: "https://microsoft.com",
+    title: "Error handling",
+    description: "Instanly analyse codes, detect errors",
+    link: "/dashboard/code-analyzer",
   },
 ];

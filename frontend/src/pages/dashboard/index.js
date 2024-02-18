@@ -32,7 +32,7 @@ export default function Dashboard({ children }) {
             href="/"
           >
             <p className="text-white font-bold">GenNovate</p>
-            <img src="/logo.png" alt="" className="h-16 w-16" />
+            <img src="/logo.jpeg" alt="" className="h-16 w-16" />
           </Link>
         </div>
         <div className="flex-1 overflow-y-auto ">
@@ -60,21 +60,21 @@ export default function Dashboard({ children }) {
             </Link>
             <Link
               className="flex items-center gap-4 px-4 py-2  font-medium rounded-md text-gray-200 dark:text-gray-400"
-              href="/code/"
+              href="/dashboard/code/"
             >
               <FileJson className="h-6 w-6 text-gray-200 dark:text-gray-400" />
               <span>JsonMapper</span>
             </Link>
             <Link
               className="flex items-center gap-4 px-4 py-2 font-medium rounded-md text-gray-200 dark:text-gray-400"
-              href="/code-analyzer/"
+              href="/dashboard/code-analyzer/"
             >
               <BrainCircuit className="h-6 w-6 text-gray-200 dark:text-gray-400" />
               <span>CodeSense</span>
             </Link>
             <Link
               className="flex items-center gap-4 px-4 py-2  font-medium rounded-md text-gray-200 dark:text-gray-400"
-              href="/code-analyzer/"
+              href="/dashboard/code-analyzer/"
             >
               <Search className="h-6 w-6 text-gray-200 dark:text-gray-400" />
               <span>CodeInspect</span>

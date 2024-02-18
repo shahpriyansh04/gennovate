@@ -3,7 +3,7 @@ import Markdown from "react-markdown";
 import gfm from "remark-gfm";
 import { MDXProvider } from "@mdx-js/react";
 import { CopyToClipboard } from "react-copy-to-clipboard";
-
+import { MagnifyingGlass } from "react-loader-spinner";
 import remarkGfm from "remark-gfm";
 import {
   GoogleGenerativeAI,
@@ -198,7 +198,16 @@ const MyComponent = () => {
               ) : (
                 <CardHeader className="flex h-96 w-[30rem] items-center justify-center">
                   {loading ? (
-                    <p>Loading</p>
+                    <MagnifyingGlass
+                      visible={true}
+                      height="80"
+                      width="80"
+                      ariaLabel="magnifying-glass-loading"
+                      wrapperStyle={{}}
+                      wrapperClass="magnifying-glass-wrapper"
+                      glassColor="#c0efff"
+                      color="#e15b64"
+                    />
                   ) : (
                     <p>Please select an image to view the code</p>
                   )}

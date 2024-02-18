@@ -6,8 +6,8 @@ import { Home } from "lucide-react";
 function Navbar({
   navItems = [
     {
-      name: "Home",
-      link: "/",
+      name: "Dashboard",
+      link: "/dashboard",
       icon: <Home className="h-4 w-4 text-neutral-500 dark:text-white" />,
     },
     {
@@ -24,7 +24,7 @@ function Navbar({
 }) {
   return (
     <div className="flex py-6 px-40 justify-between items-center bg-bl ack w-full">
-      <p className="text-2xl font-bold">Logo</p>
+      <p className="text-4xl font-bold">GenNovate</p>
       <FloatingNav navItems={navItems} />
 
       <ModeToggle />
