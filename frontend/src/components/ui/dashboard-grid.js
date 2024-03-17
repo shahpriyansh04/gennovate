@@ -61,7 +61,7 @@ const items = [
         <img src="3.png" alt="" className="object-contain w-full h-full" />
       </div>
     ),
-    link: "/dashboard/code",
+    link: "/dashboard/code-analyzer",
 
     icon: <HomeIcon className="h-4 w-4 text-neutral-500" />,
   },
@@ -75,7 +75,7 @@ const items = [
         <img src="4.png" alt="" className="object-contain w-full h-full" />
       </div>
     ),
-    link: "/dashboard/data",
+    link: "/dashboard/code",
 
     icon: <HomeIcon className="h-4 w-4 text-neutral-500" />,
   },

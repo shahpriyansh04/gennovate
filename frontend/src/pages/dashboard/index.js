@@ -1,23 +1,16 @@
-/**
- * v0 by Vercel.
- * @see https://v0.dev/t/78V6CHNYtId
- * Documentation: https://v0.dev/docs#integrating-generated-code-into-your-nextjs-app
- */
-import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import DashboardGrid from "@/components/ui/dashboard-grid";
+import { ModeToggle } from "@/components/ui/mode-toggle";
+import { UserButton } from "@clerk/nextjs";
 import {
-  Ban,
   Bookmark,
-  Brain,
   BrainCircuit,
   Code,
   FileJson,
   Scan,
   Search,
 } from "lucide-react";
-import { UserButton } from "@clerk/nextjs";
-import { ModeToggle } from "@/components/ui/mode-toggle";
-import DashboardGrid from "@/components/ui/dashboard-grid";
+import Link from "next/link";
 import { useRouter } from "next/router";
 
 export default function Dashboard({ children }) {
@@ -81,7 +74,7 @@ export default function Dashboard({ children }) {
             </Link>
             <Link
               className="flex items-center gap-4 px-4 py-2  font-medium rounded-md text-gray-200 dark:text-gray-400"
-              href="/bookmkars/"
+              href="/dashboard/"
             >
               <Bookmark className="h-6 w-6 text-gray-200 dark:text-gray-400" />
               <span>Bookmarks</span>

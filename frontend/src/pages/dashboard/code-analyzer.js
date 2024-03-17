@@ -1,21 +1,22 @@
 import { Button } from "@/components/ui/button";
-import React, { useEffect, useState } from "react";
-import AceEditor from "react-ace";
-import { MagnifyingGlass } from "react-loader-spinner";
+import { useUser } from "@clerk/nextjs";
 import {
   GoogleGenerativeAI,
-  HarmCategory,
   HarmBlockThreshold,
+  HarmCategory,
 } from "@google/generative-ai";
+import { useEffect, useState } from "react";
+import AceEditor from "react-ace";
+import { MagnifyingGlass } from "react-loader-spinner";
 import Markdown from "react-markdown";
-import { useUser } from "@clerk/nextjs";
+import Speech, { useSpeech } from "react-text-to-speech";
 
+import { Card } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { useRouter } from "next/router";
-import Dashboard from ".";
 import { cn } from "@/lib/utils";
 import { Speaker } from "lucide-react";
+import { useRouter } from "next/router";
+import Dashboard from ".";
 
 export default function CodeAnalyzer() {
   const [loading, setLoading] = useState(false);
@@ -28,7 +29,11 @@ export default function CodeAnalyzer() {
   const genAI = new GoogleGenerativeAI(API_KEY);
   const model = genAI.getGenerativeModel({ model: MODEL_NAME });
   const [code, setCode] = useState(decodeURIComponent(router.query.code || ""));
-
+  const [input, setInput] = useState();
+  const { Text, speechStatus, start, pause, stop } = useSpeech({
+    text: input,
+  });
+  console.log(speechStatus);
   useEffect(() => {
     const script = document.createElement("script");
     script.src = "https://code.responsivevoice.org/responsivevoice.js";
@@ -67,7 +72,7 @@ export default function CodeAnalyzer() {
       threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
     },
   ];
-  console.log();
+  console.log(Text());
 
   const analyzeCode = async () => {
     setMessage(null);
@@ -78,7 +83,7 @@ export default function CodeAnalyzer() {
       },
       { text: code },
     ];
-
+    let input;
     const result = await model.generateContent({
       contents: [{ role: "user", parts }],
       generationConfig,
@@ -104,12 +109,17 @@ export default function CodeAnalyzer() {
       safetySettings,
     });
     console.log(result.response.text());
-    const input = result.response.text();
+    setInput(result.response.text());
+    start();
 
     // Speak the text using ResponsiveVoice
-    if (window.responsiveVoice) {
-      window.responsiveVoice.speak(input);
+  };
+
+  const TTS = () => {
+    if (input) {
+      return <Speech text={input} />;
     }
+    return null;
   };
 
   return (
@@ -132,10 +142,7 @@ export default function CodeAnalyzer() {
           />
         </div>
         <Button
-          onClick={() => {
-            console.log("gl");
-            window.responsiveVoice.speak("Hello");
-          }}
+          onClick={analyzeCode}
           className="text-xl rounded-md  py-5 flex -1 "
           size="lg"
         >

@@ -4,6 +4,10 @@ import { ClerkLoaded, ClerkLoading, ClerkProvider } from "@clerk/nextjs";
 import { createTheme, MantineProvider } from "@mantine/core";
 import { useRouter } from "next/router";
 import Dashboard from "./dashboard";
+import { ConvexProvider, ConvexReactClient } from "convex/react";
+import { Toaster } from "sonner";
+
+const convex = new ConvexReactClient(process.env.NEXT_PUBLIC_CONVEX_URL);
 
 const theme = createTheme({
   /** Put your mantine theme override here */
@@ -24,7 +28,11 @@ export default function App({ Component, pageProps }) {
           <p>Loading...</p>
         </ClerkLoading>
         <ClerkLoaded>
-          <Component {...pageProps} />
+          <ConvexProvider client={convex}>
+            <Toaster position="bottom-center" richColors visibleToasts={1} />
+
+            <Component {...pageProps} />
+          </ConvexProvider>
         </ClerkLoaded>
       </ThemeProvider>
     </ClerkProvider>
