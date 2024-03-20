@@ -14,6 +14,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { ScrollArea } from "./ui/scroll-area";
 import { Textarea } from "./ui/textarea";
 import { Input } from "./ui/input";
+import { model, generationConfig, safetySettings } from "@/lib/ai";
 export default function ChatBox({ chatId }) {
   const { user } = useUser();
   const createMessage = useMutation(api.chat.createMessage);
@@ -23,35 +24,7 @@ export default function ChatBox({ chatId }) {
   });
   const chat = useQuery(api.chat.getChatFromId, { chatId: chatId });
   console.log(messages);
-  const MODEL_NAME = "gemini-pro";
   const [userPrompt, setUserPrompt] = useState();
-  const API_KEY = "AIzaSyA_KMefibpuuM56ibhTArtxYk-zMJWF2N4";
-  const genAI = new GoogleGenerativeAI(API_KEY);
-  const model = genAI.getGenerativeModel({ model: MODEL_NAME });
-  const generationConfig = {
-    temperature: 0,
-    topK: 1,
-    topP: 1,
-    maxOutputTokens: 2048,
-  };
-  const safetySettings = [
-    {
-      category: HarmCategory.HARM_CATEGORY_HARASSMENT,
-      threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
-    },
-    {
-      category: HarmCategory.HARM_CATEGORY_HATE_SPEECH,
-      threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
-    },
-    {
-      category: HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT,
-      threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
-    },
-    {
-      category: HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT,
-      threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
-    },
-  ];
 
   const getAnswer = async (userQuestion) => {
     const parts = [{ text: "" }, { text: userQuestion }];

@@ -14,6 +14,7 @@ import {
   HarmCategory,
   HarmBlockThreshold,
 } from "@google/generative-ai";
+import { model, generationConfig, safetySettings } from "@/lib/ai";
 const navItems = [
   {
     name: "Home",
@@ -38,43 +39,15 @@ const navItems = [
 ];
 
 function Code() {
-  const MODEL_NAME = "gemini-pro";
   const [chatMessages, setChatMessages] = useState([]);
 
-  const API_KEY = "AIzaSyA_KMefibpuuM56ibhTArtxYk-zMJWF2N4";
   const genAI = new GoogleGenerativeAI(API_KEY);
-  const model = genAI.getGenerativeModel({ model: MODEL_NAME });
   const [input, setInput] = useState();
   const [output, setOutput] = useState();
   const [schema, setSchema] = useState();
 
   const [userPrompt, setUserPrompt] = useState();
 
-  const generationConfig = {
-    temperature: 0,
-    topK: 1,
-    topP: 1,
-    maxOutputTokens: 2048,
-  };
-  const safetySettings = [
-    {
-      category: HarmCategory.HARM_CATEGORY_HARASSMENT,
-      threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
-    },
-    {
-      category: HarmCategory.HARM_CATEGORY_HATE_SPEECH,
-      threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
-    },
-    {
-      category: HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT,
-      threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
-    },
-    {
-      category: HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT,
-      threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
-    },
-  ];
-  console.log(chatMessages);
   const chat = model.startChat({
     generationConfig,
     safetySettings,

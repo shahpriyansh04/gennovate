@@ -13,6 +13,8 @@ import {
 import { CodeBlock } from "react-code-blocks";
 import Navbar from "@/components/ui/navbar";
 import Home from "..";
+import { model, generationConfig, safetySettings } from "@/lib/ai";
+
 import { Button } from "@/components/ui/button";
 import Dashboard from ".";
 import { Input } from "@/components/ui/input";
@@ -21,8 +23,6 @@ import { Card, CardHeader } from "@/components/ui/card";
 import { Image } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-const MODEL_NAME = "gemini-1.0-pro-vision-latest";
-const API_KEY = "AIzaSyA_KMefibpuuM56ibhTArtxYk-zMJWF2N4";
 const navItems = [
   {
     name: "Home",
@@ -73,35 +73,6 @@ const MyComponent = () => {
     setFilePath(url);
     reader.readAsDataURL(file);
   };
-  const genAI = new GoogleGenerativeAI(API_KEY);
-
-  const model = genAI.getGenerativeModel({ model: MODEL_NAME });
-
-  const generationConfig = {
-    temperature: 0.4,
-    topK: 32,
-    topP: 1,
-    maxOutputTokens: 4096,
-  };
-
-  const safetySettings = [
-    {
-      category: HarmCategory.HARM_CATEGORY_HARASSMENT,
-      threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
-    },
-    {
-      category: HarmCategory.HARM_CATEGORY_HATE_SPEECH,
-      threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
-    },
-    {
-      category: HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT,
-      threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
-    },
-    {
-      category: HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT,
-      threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
-    },
-  ];
 
   const generateContent = async () => {
     setText(null);
@@ -157,7 +128,7 @@ const MyComponent = () => {
                   htmlFor="file-upload"
                   className="flex flex-col  items-center px-4 py-6 text-white/50 rounded-lg tracking-wide uppercase cursor-pointer "
                 >
-                  <Image className="w-20 h-20" />
+                  <Image className="w-20 h-20 obj" />
                   <span className="mt-2 text-base leading-normal">
                     Select a file
                   </span>
@@ -171,7 +142,10 @@ const MyComponent = () => {
               </div>
             )}
             {file && (
-              <img src={filePath} className="w-[30rem] h-96 rounded-lg" />
+              <img
+                src={filePath}
+                className="w-[30rem] h-96 rounded-lg object-contain"
+              />
             )}
             <Button
               onClick={generateContent}
@@ -181,7 +155,7 @@ const MyComponent = () => {
             </Button>
           </div>
           <div className="flex items-start text-white">
-            <Card className={cn("dark:bg-[#1b1b1b]")}>
+            <Card className={cn("dark:bg-[#1b1b1b] w-[30rem]")}>
               {text ? (
                 <CardHeader>
                   <ScrollArea className="h-[500px] text-start relative">

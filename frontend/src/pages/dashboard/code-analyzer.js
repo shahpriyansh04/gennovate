@@ -1,15 +1,12 @@
 import { Button } from "@/components/ui/button";
 import { useUser } from "@clerk/nextjs";
-import {
-  GoogleGenerativeAI,
-  HarmBlockThreshold,
-  HarmCategory,
-} from "@google/generative-ai";
+
 import { useEffect, useState } from "react";
 import AceEditor from "react-ace";
 import { MagnifyingGlass } from "react-loader-spinner";
 import Markdown from "react-markdown";
 import Speech, { useSpeech } from "react-text-to-speech";
+import { model, generationConfig, safetySettings } from "@/lib/ai";
 
 import { Card } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -21,13 +18,9 @@ import Dashboard from ".";
 export default function CodeAnalyzer() {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
-  const MODEL_NAME = "gemini-pro";
   const { user } = useUser();
   const [message, setMessage] = useState();
   const [userPrompt, setUserPrompt] = useState();
-  const API_KEY = "AIzaSyA_KMefibpuuM56ibhTArtxYk-zMJWF2N4";
-  const genAI = new GoogleGenerativeAI(API_KEY);
-  const model = genAI.getGenerativeModel({ model: MODEL_NAME });
   const [code, setCode] = useState(decodeURIComponent(router.query.code || ""));
   const [input, setInput] = useState();
   const { Text, speechStatus, start, pause, stop } = useSpeech({
@@ -48,30 +41,7 @@ export default function CodeAnalyzer() {
     setCode(newValue);
   }
   console.log(code);
-  const generationConfig = {
-    temperature: 0,
-    topK: 1,
-    topP: 1,
-    maxOutputTokens: 2048,
-  };
-  const safetySettings = [
-    {
-      category: HarmCategory.HARM_CATEGORY_HARASSMENT,
-      threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
-    },
-    {
-      category: HarmCategory.HARM_CATEGORY_HATE_SPEECH,
-      threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
-    },
-    {
-      category: HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT,
-      threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
-    },
-    {
-      category: HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT,
-      threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
-    },
-  ];
+
   console.log(Text());
 
   const analyzeCode = async () => {

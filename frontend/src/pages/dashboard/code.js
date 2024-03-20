@@ -1,22 +1,18 @@
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import Navbar from "@/components/ui/navbar";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import { Textarea } from "@/components/ui/textarea";
-import { Edit, Home, PcCaseIcon, Trash } from "lucide-react";
-import React, { useState } from "react";
-import { CodeBlock, CopyBlock } from "react-code-blocks";
-import { JsonInput } from "@mantine/core";
+import { Home } from "lucide-react";
+import { useState } from "react";
+import { CodeBlock } from "react-code-blocks";
 import JSONInput from "react-json-editor-ajrm";
-import locale from "react-json-editor-ajrm/locale/en";
-import { MagnifyingGlass } from "react-loader-spinner";
+import { model, generationConfig, safetySettings } from "@/lib/ai";
+
 import {
   GoogleGenerativeAI,
-  HarmCategory,
   HarmBlockThreshold,
+  HarmCategory,
 } from "@google/generative-ai";
+import { MagnifyingGlass } from "react-loader-spinner";
 import Dashboard from ".";
-import { Input } from "@/components/ui/input";
 const navItems = [
   {
     name: "Home",
@@ -41,42 +37,14 @@ const navItems = [
 ];
 
 function Code() {
-  const MODEL_NAME = "gemini-pro";
   const [chatMessages, setChatMessages] = useState([]);
   const [loading, setLoading] = useState(false);
-  const API_KEY = "AIzaSyA_KMefibpuuM56ibhTArtxYk-zMJWF2N4";
-  const genAI = new GoogleGenerativeAI(API_KEY);
-  const model = genAI.getGenerativeModel({ model: MODEL_NAME });
   const [input, setInput] = useState();
   const [output, setOutput] = useState();
   const [schema, setSchema] = useState();
 
   const [userPrompt, setUserPrompt] = useState();
 
-  const generationConfig = {
-    temperature: 0,
-    topK: 1,
-    topP: 1,
-    maxOutputTokens: 2048,
-  };
-  const safetySettings = [
-    {
-      category: HarmCategory.HARM_CATEGORY_HARASSMENT,
-      threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
-    },
-    {
-      category: HarmCategory.HARM_CATEGORY_HATE_SPEECH,
-      threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
-    },
-    {
-      category: HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT,
-      threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
-    },
-    {
-      category: HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT,
-      threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
-    },
-  ];
   console.log(chatMessages);
   const chat = model.startChat({
     generationConfig,
